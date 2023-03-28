@@ -18,8 +18,10 @@ const StudentScheme = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    mediaId: {
-      type: mongoose.Types.ObjectId,
+    schoolThatBelongs: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "schools",
+      unique: true,
     },
   },
   { timestamps: true, versionKey: false }
