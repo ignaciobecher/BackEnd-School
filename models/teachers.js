@@ -15,12 +15,10 @@ const TeacherSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true,
   },
-  schooId: {
-    type: mongoose.Schema.Types.ObjectId,
+  schoolId: {
+    type: mongoose.Types.ObjectId,
     ref: "schools",
-    unique: true,
   },
 });
 

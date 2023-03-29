@@ -3,6 +3,7 @@ const { schoolModel } = require("../models/school");
 const getSchools = async (req, res) => {
   try {
     const data = await schoolModel.find();
+
     res.send(data);
   } catch (error) {
     console.log(error);
@@ -22,7 +23,8 @@ const createSchool = async (req, res) => {
 const getSchool = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await schoolModel.findById({ _id: id });
+    const data = await schoolModel.findById({ _id: id }).populate("teachers");
+
     res.send(data);
   } catch (error) {
     console.log(error);
