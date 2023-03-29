@@ -17,6 +17,11 @@ const TeacherSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  schooId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "schools",
+    unique: true,
+  },
 });
 
 const teachersModel = mongoose.model("teachers", TeacherSchema);

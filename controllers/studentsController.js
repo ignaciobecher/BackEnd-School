@@ -1,9 +1,12 @@
 const { studentsModel } = require("../models/students");
-const mongoose = require("mongoose");
 
 const getStudents = async (req, res) => {
-  const data = await studentsModel.find({});
-  res.send({ data });
+  try {
+    const data = await studentsModel.find({}).populate("schoolThatBelongs");
+    res.send({ data });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const createStudent = async (req, res) => {
@@ -18,9 +21,15 @@ const createStudent = async (req, res) => {
 };
 
 const getStudent = async (req, res) => {
-  const { id } = req.params;
-  const data = await studentsModel.findById({ _id: id });
-  res.send({ data });
+  try {
+    const { id } = req.params;
+    const data = await studentsModel
+      .findById({ _id: id })
+      .populate("schoolThatBelongs");
+    res.send({ data });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const updateStudent = async (req, res) => {
@@ -36,4 +45,18 @@ const updateStudent = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { getStudents, createStudent, getStudent, updateStudent };
+
+const deleteStudent = async (req, res) => {
+  const { id } = req.params;
+  const deletedStudent = await studentsModel.deleteOne({ _id: id });
+  res.send(deletedStudent);
+  console.log("Estudiante eliminado");
+};
+
+module.exports = {
+  getStudents,
+  createStudent,
+  getStudent,
+  updateStudent,
+  deleteStudent,
+};
