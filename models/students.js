@@ -23,6 +23,12 @@ const StudentScheme = new mongoose.Schema(
       ref: "schools",
       unique: true,
     },
+    grade: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "grades",
+      },
+    ],
   },
   { timestamps: true, versionKey: false }
 );

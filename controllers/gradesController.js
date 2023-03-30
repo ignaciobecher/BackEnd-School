@@ -17,9 +17,6 @@ const createGrades = async (req, res) => {
     const { body } = req;
     const grade = await gradesModel.create(body);
     const student = await studentsModel.findById(body.studentId);
-    if (!student) {
-      return handleHttpError(res, "STUDENT_NOT_FOUND");
-    }
     student.grade.push(grade._id);
     await student.save();
     res.send(grade);
@@ -31,6 +28,10 @@ const createGrades = async (req, res) => {
 
 const updateGrades = async (req, res) => {
   try {
+    const { id } = req.params;
+    const { body } = req;
+    const data = await gradesModel.findByIdAndUpdate({ _id: id }, body);
+    res.send(data);
   } catch (error) {
     handleHttpError(res, "ERROR_UPDATE_GRADES");
   }
@@ -38,6 +39,10 @@ const updateGrades = async (req, res) => {
 
 const deleteGrades = async (req, res) => {
   try {
+    const { id } = req.params;
+    const data = await gradesModel.deleteOne({ _id: id });
+    res.send(data);
+    console.log("Nota eliminada");
   } catch (error) {
     handleHttpError(res, "ERROR_DELETE_GRADES");
   }

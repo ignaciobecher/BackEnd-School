@@ -25,7 +25,8 @@ const getStudent = async (req, res) => {
     const { id } = req.params;
     const data = await studentsModel
       .findById({ _id: id })
-      .populate("schoolThatBelongs");
+      .populate("schoolThatBelongs grade");
+
     res.send({ data });
   } catch (error) {
     console.log(error);

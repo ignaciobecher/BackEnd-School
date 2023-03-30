@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get("/", getGrades);
 router.post("/", createGrades);
-router.put("/", updateGrades);
-router.delete("/", deleteGrades);
+router.put("/:id", updateGrades);
+router.delete("/:id", deleteGrades);
 
 module.exports = router;
