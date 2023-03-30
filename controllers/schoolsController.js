@@ -23,7 +23,9 @@ const createSchool = async (req, res) => {
 const getSchool = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await schoolModel.findById({ _id: id }).populate("teachers");
+    const data = await schoolModel
+      .findById({ _id: id })
+      .populate("teachers", "name surname");
 
     res.send(data);
   } catch (error) {
