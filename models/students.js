@@ -21,7 +21,7 @@ const StudentScheme = new mongoose.Schema(
     schoolThatBelongs: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "schools",
-      unique: true,
+      unique: false,
     },
     grade: [
       {
