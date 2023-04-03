@@ -18,17 +18,18 @@ const StudentScheme = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    schoolThatBelongs: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "schools",
-      unique: false,
-    },
+
     grade: [
       {
         type: mongoose.Types.ObjectId,
         ref: "grades",
       },
     ],
+    schoolThatBelongs: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "schools",
+      unique: false,
+    },
   },
   { timestamps: true, versionKey: false }
 );

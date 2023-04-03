@@ -48,6 +48,7 @@ const loginController = async (req, res) => {
     res.send({ data });
   } catch (error) {
     handleHttpError(res, "ERROR_LOGIN_USER");
+    console.log(error);
   }
 };
 
