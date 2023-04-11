@@ -6,6 +6,7 @@ const {
   loginController,
   getUsers,
 } = require("../controllers/usersController");
+const { authRoute } = require("../middlewares/validateAuth");
 
 router.post("/register", registerUser);
 router.post("/login", loginController);

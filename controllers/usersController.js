@@ -19,6 +19,7 @@ const registerUser = async (req, res) => {
     res.json({ data });
   } catch (error) {
     handleHttpError(res, "ERROR_REGISTER_USER");
+    console.log(error);
   }
 };
 

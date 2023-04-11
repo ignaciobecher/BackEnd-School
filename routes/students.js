@@ -8,6 +8,7 @@ const {
   updateStudent,
   deleteStudent,
 } = require("../controllers/studentsController");
+const { authRoute } = require("../middlewares/validateAuth");
 
 router.get("/", getStudents);
 router.post("/", createStudent);
