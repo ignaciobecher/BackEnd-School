@@ -19,6 +19,10 @@ const UserScheme = new mongoose.Schema({
     type: ["user", "admin"],
     default: "user",
   },
+  studentId: {
+    type: mongoose.Types.ObjectId,
+    ref: "students",
+  },
 });
 
 const usersModel = mongoose.model("users", UserScheme);

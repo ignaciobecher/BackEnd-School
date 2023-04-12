@@ -6,9 +6,9 @@ const { handleHttpError } = require("../utils/handleHttpError");
 
 const registerUser = async (req, res) => {
   try {
-    const { userName, password, email } = req.body; //ingreso los datos en el body
+    const { password, email } = req.body; //ingreso los datos en el body
     const passwordHash = await encrypt(password); //hasheo la contra
-    const body = { userName, password: passwordHash, email }; //establezco que la contra es = a contra hasheada
+    const body = { password: passwordHash, email }; //establezco que la contra es = a contra hasheada
     const userRegistered = await usersModel.create(body); //creo el usuario
     userRegistered.set("password", undefined, { strict: false }); //oculto contra
     const data = {
