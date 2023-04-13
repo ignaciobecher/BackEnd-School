@@ -8,6 +8,7 @@ const UserScheme = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
   email: {
     type: String,
@@ -17,6 +18,10 @@ const UserScheme = new mongoose.Schema({
   role: {
     type: ["user", "admin"],
     default: "user",
+  },
+  studentId: {
+    type: mongoose.Types.ObjectId,
+    ref: "students",
   },
 });
 
