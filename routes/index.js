@@ -10,10 +10,7 @@ const removeExtension = (filename) => {
 fs.readdirSync(PATH_ROUTES).filter((file) => {
   const name = removeExtension(file);
   if (name !== "index") {
-    router.use(
-      `https://backend-school-production.up.railway.app/${name}`,
-      require(`./${file}`)
-    );
+    router.use(`/${name}`, require(`./${file}`));
   }
 });
 
