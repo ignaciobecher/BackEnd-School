@@ -6,9 +6,9 @@ const { handleHttpError } = require("../utils/handleHttpError");
 
 const registerUser = async (req, res) => {
   try {
-    const { password, email } = req.body; //ingreso los datos en el body
+    const { userName, password, email } = req.body; //ingreso los datos en el body
     const passwordHash = await encrypt(password); //hasheo la contra
-    const body = { password: passwordHash, email }; //establezco que la contra es = a contra hasheada
+    const body = { userName, password: passwordHash, email }; //establezco que la contra es = a contra hasheada
     const userRegistered = await usersModel.create(body); //creo el usuario
     userRegistered.set("password", undefined, { strict: false }); //oculto contra
     const data = {
@@ -17,6 +17,7 @@ const registerUser = async (req, res) => {
       user: userRegistered, //usuario es igual a usuairo
     };
     res.json({ data });
+    console.log("Usuario registrado");
   } catch (error) {
     handleHttpError(res, "ERROR_REGISTER_USER");
     console.log(error);
@@ -54,8 +55,22 @@ const loginController = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  const data = await usersModel.find();
+  const data = await usersModel.find().populate({
+    path: "gradesId",
+    select: "-average -_id -userId",
+  });
   res.send(data);
 };
 
-module.exports = { registerUser, loginController, getUsers };
+const getUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await usersModel.findById({ _id: id });
+    res.send({ data });
+  } catch (error) {
+    handleHttpError(res, "ERROR_GET_USER");
+    console.log(error);
+  }
+};
+
+module.exports = { registerUser, loginController, getUsers, getUser };

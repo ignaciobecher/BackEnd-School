@@ -1,6 +1,7 @@
 const { gradesModel } = require("../models/grades");
 const { studentsModel } = require("../models/students");
 const { handleHttpError } = require("../utils/handleHttpError");
+const { usersModel } = require("../models/users");
 
 const getGrades = async (req, res) => {
   try {
@@ -16,9 +17,9 @@ const createGrades = async (req, res) => {
   try {
     const { body } = req;
     const grade = await gradesModel.create(body);
-    const student = await studentsModel.findById(body.studentId);
-    student.grade.push(grade._id);
-    await student.save();
+    const user = await usersModel.findById(body.userId);
+    user.gradesId.push(grade._id);
+    await user.save();
     res.send(grade);
   } catch (error) {
     console.log(error);

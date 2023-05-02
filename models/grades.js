@@ -10,9 +10,9 @@ const GradesSchema = new mongoose.Schema({
   average: {
     type: Number,
   },
-  studentId: {
+  userId: {
     type: mongoose.Types.ObjectId,
-    ref: "students",
+    ref: "users",
   },
 });
 

@@ -23,6 +23,16 @@ const UserScheme = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "students",
   },
+  schoolId: {
+    type: mongoose.Types.ObjectId,
+    ref: "schools",
+  },
+  gradesId: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "grades",
+    },
+  ],
 });
 
 const usersModel = mongoose.model("users", UserScheme);
