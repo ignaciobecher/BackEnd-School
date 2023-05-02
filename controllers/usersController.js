@@ -55,8 +55,22 @@ const loginController = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  const data = await usersModel.find();
+  const data = await usersModel.find().populate({
+    path: "gradesId",
+    select: "-average -_id -userId",
+  });
   res.send(data);
 };
 
-module.exports = { registerUser, loginController, getUsers };
+const getUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await usersModel.findById({ _id: id });
+    res.send({ data });
+  } catch (error) {
+    handleHttpError(res, "ERROR_GET_USER");
+    console.log(error);
+  }
+};
+
+module.exports = { registerUser, loginController, getUsers, getUser };
