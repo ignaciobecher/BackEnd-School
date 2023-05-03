@@ -66,7 +66,7 @@ const getUser = async (req, res) => {
   try {
     const { id } = req.params;
     const data = await usersModel.findById({ _id: id }).populate({
-      path: "gradesId",
+      path: "gradesId userSchool",
       select: "-average -_id -userId",
     });
     res.send({ data });
@@ -76,4 +76,21 @@ const getUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginController, getUsers, getUser };
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { body } = req;
+    const user = await usersModel.findByIdAndUpdate({ _id: id }, body);
+    res.send({ user });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  registerUser,
+  loginController,
+  getUsers,
+  getUser,
+  updateUser,
+};

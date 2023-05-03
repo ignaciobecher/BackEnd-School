@@ -19,6 +19,18 @@ const UserScheme = new mongoose.Schema({
     type: ["user", "admin"],
     default: "user",
   },
+  name: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  phone: {
+    type: Number,
+  },
+  age: {
+    type: Number,
+  },
   studentId: {
     type: mongoose.Types.ObjectId,
     ref: "students",
