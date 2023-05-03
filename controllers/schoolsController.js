@@ -1,4 +1,5 @@
 const { schoolModel } = require("../models/school");
+const { usersModel } = require("../models/users");
 
 const getSchools = async (req, res) => {
   try {
@@ -13,8 +14,11 @@ const getSchools = async (req, res) => {
 const createSchool = async (req, res) => {
   try {
     const { body } = req;
-    const data = await schoolModel.create(body);
-    res.send({ data: body });
+    const school = await schoolModel.create(body);
+    const user = await usersModel.findById(body.userId);
+    user.userSchool.push(school._id);
+    await user.save();
+    res.send(school);
   } catch (error) {
     console.log(error);
   }

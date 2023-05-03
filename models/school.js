@@ -25,6 +25,10 @@ const SchoolSchema = new mongoose.Schema({
       ref: "teachers",
     },
   ],
+  userId: {
+    type: mongoose.Types.ObjectId,
+    ref: "users",
+  },
 });
 
 const schoolModel = mongoose.model("schools", SchoolSchema);

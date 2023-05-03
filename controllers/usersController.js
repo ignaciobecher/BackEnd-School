@@ -56,8 +56,8 @@ const loginController = async (req, res) => {
 
 const getUsers = async (req, res) => {
   const data = await usersModel.find().populate({
-    path: "gradesId",
-    select: "-average -_id -userId",
+    path: "gradesId userSchool",
+    select: "-average -_id -userId ",
   });
   res.send(data);
 };
@@ -65,7 +65,10 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await usersModel.findById({ _id: id });
+    const data = await usersModel.findById({ _id: id }).populate({
+      path: "gradesId",
+      select: "-average -_id -userId",
+    });
     res.send({ data });
   } catch (error) {
     handleHttpError(res, "ERROR_GET_USER");
