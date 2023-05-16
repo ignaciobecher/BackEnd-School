@@ -22,6 +22,9 @@ const UserScheme = new mongoose.Schema({
   name: {
     type: String,
   },
+  surname: {
+    type: String,
+  },
   address: {
     type: String,
   },
@@ -31,24 +34,16 @@ const UserScheme = new mongoose.Schema({
   age: {
     type: Number,
   },
-  studentId: {
-    type: mongoose.Types.ObjectId,
-    ref: "students",
-  },
-  schoolId: {
-    type: mongoose.Types.ObjectId,
-    ref: "schools",
-  },
-  gradesId: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "grades",
-    },
-  ],
   userSchool: [
     {
       type: mongoose.Types.ObjectId,
       ref: "schools",
+    },
+  ],
+  subjects: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "subjects",
     },
   ],
 });

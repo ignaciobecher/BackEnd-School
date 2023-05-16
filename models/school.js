@@ -25,6 +25,13 @@ const SchoolSchema = new mongoose.Schema({
       ref: "teachers",
     },
   ],
+  subjects: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "subjects",
+    },
+  ],
+
   userId: {
     type: mongoose.Types.ObjectId,
     ref: "users",

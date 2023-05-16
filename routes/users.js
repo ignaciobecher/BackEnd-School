@@ -7,6 +7,7 @@ const {
   getUsers,
   getUser,
   updateUser,
+  updateUserSubject,
 } = require("../controllers/usersController");
 const { authRoute } = require("../middlewares/validateAuth");
 
@@ -15,5 +16,6 @@ router.post("/login", loginController);
 router.get("/usersShow", getUsers);
 router.get("/userHome/:id", getUser);
 router.put("/userData/:id", updateUser);
+router.put("/addSubject/:id", updateUserSubject);
 
 module.exports = router;

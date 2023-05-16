@@ -1,4 +1,5 @@
 const { usersModel } = require("../models/users");
+const { subjectModel } = require("../models/subjects");
 const { encrypt, comparePasswords } = require("../utils/handlePassword");
 const { tokenSign } = require("../utils/handleJWT");
 const { compare } = require("bcryptjs");
@@ -54,6 +55,7 @@ const loginController = async (req, res) => {
   }
 };
 
+//Controlador para ver usuarios (SOLO EN DESARROLLO)
 const getUsers = async (req, res) => {
   const data = await usersModel.find().populate({
     path: "gradesId userSchool",
@@ -62,13 +64,12 @@ const getUsers = async (req, res) => {
   res.send(data);
 };
 
+//Controlador para ver usuario
+
 const getUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await usersModel.findById({ _id: id }).populate({
-      path: "gradesId userSchool",
-      select: "-average -_id -userId",
-    });
+    const data = await usersModel.findById({ _id: id });
     res.send({ data });
   } catch (error) {
     handleHttpError(res, "ERROR_GET_USER");
@@ -76,11 +77,27 @@ const getUser = async (req, res) => {
   }
 };
 
+//Controlador para actualizar datos de usuario
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { body } = req;
     const user = await usersModel.findByIdAndUpdate({ _id: id }, body);
+    res.send({ user });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//Funcion para vincular usuario con una materia
+const updateUserSubject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { body } = req;
+    const user = await usersModel.findByIdAndUpdate({ _id: id }, body);
+    const subject = await subjectModel.findById(body.subjects);
+    user.subjects.push(subject._id);
+    await user.save();
     res.send({ user });
   } catch (error) {
     console.log(error);
@@ -93,4 +110,5 @@ module.exports = {
   getUsers,
   getUser,
   updateUser,
+  updateUserSubject,
 };

@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../FrontEndTest"
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "FrontEndTest"
+	}
+}
