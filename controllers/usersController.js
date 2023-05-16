@@ -7,9 +7,9 @@ const { handleHttpError } = require("../utils/handleHttpError");
 
 const registerUser = async (req, res) => {
   try {
-    const { userName, password, email } = req.body; //ingreso los datos en el body
+    const { userName, password, email, role } = req.body; //ingreso los datos en el body
     const passwordHash = await encrypt(password); //hasheo la contra
-    const body = { userName, password: passwordHash, email }; //establezco que la contra es = a contra hasheada
+    const body = { userName, password: passwordHash, email, role }; //establezco que la contra es = a contra hasheada
     const userRegistered = await usersModel.create(body); //creo el usuario
     userRegistered.set("password", undefined, { strict: false }); //oculto contra
     const data = {
@@ -57,10 +57,7 @@ const loginController = async (req, res) => {
 
 //Controlador para ver usuarios (SOLO EN DESARROLLO)
 const getUsers = async (req, res) => {
-  const data = await usersModel.find().populate({
-    path: "gradesId userSchool",
-    select: "-average -_id -userId ",
-  });
+  const data = await usersModel.find();
   res.send(data);
 };
 
@@ -69,7 +66,10 @@ const getUsers = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await usersModel.findById({ _id: id });
+    const data = await usersModel.findById({ _id: id }).populate({
+      path: "subjects",
+      select: "name _id",
+    });
     res.send({ data });
   } catch (error) {
     handleHttpError(res, "ERROR_GET_USER");
@@ -90,15 +90,43 @@ const updateUser = async (req, res) => {
 };
 
 //Funcion para vincular usuario con una materia
-const updateUserSubject = async (req, res) => {
+const addSubjectToUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { body } = req;
-    const user = await usersModel.findByIdAndUpdate({ _id: id }, body);
+    const user = await usersModel.findById(id);
     const subject = await subjectModel.findById(body.subjects);
+
+    // Verificar si la materia ya está presente en el arreglo
+    const existingSubject = user.subjects.find((subjectId) =>
+      subjectId.equals(subject._id)
+    );
+    if (existingSubject) {
+      return res
+        .status(400)
+        .send({ message: "La materia ya está agregada al usuario" });
+    }
+
     user.subjects.push(subject._id);
     await user.save();
+
     res.send({ user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Error interno del servidor" });
+  }
+};
+
+//Funcion para eliminar materia de un usuario
+const removeSubjectFromUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { body } = req;
+    const user = await usersModel.findByIdAndUpdate({ _id: id });
+    user.subjects.pull(body.subjects._id);
+    await user.save();
+    res.send({ user });
+    console.log("Materia eliminada");
   } catch (error) {
     console.log(error);
   }
@@ -110,5 +138,6 @@ module.exports = {
   getUsers,
   getUser,
   updateUser,
-  updateUserSubject,
+  addSubjectToUser,
+  removeSubjectFromUser,
 };
